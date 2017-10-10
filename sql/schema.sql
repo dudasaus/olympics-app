@@ -4,6 +4,8 @@ CREATE DATABASE olympics;
 
 USE olympics;
 
+### SECTION 1: TABLES FOR INFORMATION ABOUT THE ACTUAL OLYMPICS ###
+
 # General category (e.g. skiing)
 CREATE TABLE sports_category (
     id INTEGER NOT NULL AUTO_INCREMENT,
@@ -68,3 +70,7 @@ CREATE TABLE results (
     medal INTEGER NOT NULL, # 1 = bronze, 2 = silver, 3 = gold?
     PRIMARY KEY (sports_event_id)
 );
+
+
+
+### SECTION 2: TABLES ABOUT USERS, GROUPS, PREDICTIONS, SCORING, ETC. ###
