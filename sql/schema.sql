@@ -16,6 +16,7 @@ CREATE TABLE sports_events (
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(40) NOT NULL,
     category_id INTEGER NOT NULL REFERENCES sports_category(id),
+    team_event BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -57,4 +58,13 @@ CREATE TABLE countries_sports_events (
     country_id INTEGER NOT NULL REFERENCES countries(id),
     sports_event_id INTEGER NOT NULL REFERENCES sports_events(id),
     PRIMARY KEY (country_id, sports_event_id)
+);
+
+# Results info for events
+CREATE TABLE results (
+    sports_event_id INTEGER NOT NULL REFERENCES sports_events(id),
+    country_id INTEGER NOT NULL REFERENCES countries(id),
+    athlete_id INTEGER REFERENCES athletes(id), # Can be null if team event
+    medal INTEGER NOT NULL, # 1 = bronze, 2 = silver, 3 = gold?
+    PRIMARY KEY (sports_event_id)
 );
