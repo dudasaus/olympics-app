@@ -1,27 +1,19 @@
-// var express = require('express')
-// var app = express()
-//
-// app.set('port', (process.env.PORT || 5000))
-// app.use(express.static(__dirname + '/public'))
-//
-// app.get('/', function(request, response) {
-//   response.send('Hello World!')
-// })
-//
-// app.listen(app.get('port'), function() {
-//   console.log("Node app is running at localhost:" + app.get('port'))
-// })
-
 const express = require('express');
 const app = express();
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 8080));
 
-app.get('/*', (req, res) => {
-    res.send(`<pre>METHOD: ${req.method}, URL: ${req.url}</pre>`);
-    console.log(req.method);
+// TODO: Make another function to handle API calls?
+app.get('/api/*', (req, res) => {
+    res.send(`<pre>${JSON.stringify({'data': 0}, null, 2)}</pre>`);
 });
 
+// We will send everything that's not an API call to a react one page app
+app.get('/*', (req, res) => {
+    res.send(`<pre>METHOD: ${req.method}, PATH: ${req.path}, QUERY: ${JSON.stringify(req.query)}</pre>`);
+});
+
+// Local port is 8080 for testing
 app.listen(app.get('port'), () => {
     process.stdout.write(`Listening on port ${app.get('port')}\n`);
 });
