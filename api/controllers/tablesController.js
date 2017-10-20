@@ -4,10 +4,10 @@ const { Client } = require('pg');
 function listTables(req, res) {
   console.log('Listing tables...');
   const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: true,
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
   });
-  let tables = [];
+  const tables = [];
   client.connect();
   client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, cres) => {
     if (err) throw err;

@@ -1,5 +1,4 @@
 const express = require('express');
-const { Client } = require('pg');
 const routes = require('./api/routes/tablesRoutes.js');
 
 const app = express();
