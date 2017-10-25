@@ -8,3 +8,10 @@ function noNullValues(arr) {
   return true;
 }
 module.exports.noNullValues = noNullValues;
+
+function errorResponse(res, statusCode, msg) {
+  const error = { status_code: statusCode, message: msg };
+  res.status(statusCode);
+  res.json(error);
+}
+module.exports.errorResponse = errorResponse;
