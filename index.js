@@ -1,11 +1,18 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const routes = require('./api/routes/allRoutes.js');
 
+// Create the app
 const app = express();
 
+// Use body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Set the port
 app.set('port', (process.env.PORT || 8080));
 
-// TODO: Make another function to handle API calls?
+// Use API routes
 routes(app);
 
 // We will send everything that's not an API call to a react one page app
