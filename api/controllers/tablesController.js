@@ -2,7 +2,6 @@ const { Client } = require('pg');
 
 // Tables
 function listTables(req, res) {
-  console.log('Listing tables...');
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
