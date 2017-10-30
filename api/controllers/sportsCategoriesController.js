@@ -1,8 +1,8 @@
 const { Client } = require('pg');
-const { noNullValues, errorResponse } = require('./helpers.js');
+const { noNullValues, errorResponse, writePermission } = require('./helpers.js');
 
 // List categories
-function listCategories(req, res) {
+function getCategories(req, res) {
   // SQL statement
   const sql = 'SELECT id, name FROM sports_category;';
 
@@ -18,7 +18,7 @@ function listCategories(req, res) {
     res.json(cres.rows);
   });
 }
-module.exports.listCategories = listCategories;
+module.exports.getCategories = getCategories;
 
 // Add categories
 function addCategory(req, res) {
@@ -26,8 +26,12 @@ function addCategory(req, res) {
   const sql = 'INSERT INTO sports_category (name) VALUES ($1) RETURNING *';
   const values = [req.body.name];
 
+  // Check for write permissions
+  if (!writePermission(req)) {
+    errorResponse(res, 403, 'Invalid or missing API key');
+  }
   // Check for expected body data
-  if (noNullValues(values)) {
+  else if (noNullValues(values)) {
     // Create client, connect, and run query
     const client = new Client({
       connectionString: process.env.DATABASE_URL,
@@ -40,7 +44,8 @@ function addCategory(req, res) {
       // Return the inserted information
       res.json(cres.rows[0]);
     });
-  } else {
+  }
+  else {
     // Expected body values don't exist
     errorResponse(res, 404, 'Missing expected body data.');
   }
