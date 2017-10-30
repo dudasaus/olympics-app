@@ -4,5 +4,6 @@ module.exports = (app) => {
   // categories routes
   app.route('/api/sports-category/')
     .get(categories.getCategories)
-    .post(categories.addCategory);
+    .post(categories.addCategory)
+    .delete(categories.deleteCategory);
 };

@@ -69,10 +69,11 @@ function deleteCategory(req, res) {
     });
 
     // Read ID
-    let id = values[0];
+    const id = values[0];
     if (id === 'all') {
       // delete all categories
       const sql = 'DELETE FROM sports_category RETURNING *';
+      client.connect();
       client.query(sql, (err, cres) => {
         if (err) throw err;
         client.end();
@@ -81,14 +82,25 @@ function deleteCategory(req, res) {
       });
     }
     else if (!Number.isNaN(parseInt(id, 10))) {
-      id = parseInt(id, 10);
-      // TODO: delete category with id
+      const sql = 'DELETE FROM sports_category WHERE id = $1 RETURNING *';
+      client.connect();
+      client.query(sql, values, (err, cres) => {
+        if (err) throw err;
+        client.end();
+        // Return the deleted rows
+        if (cres.rows.length) {
+          res.json(cres.rows[0]);
+        }
+        else {
+          errorResponse(res, 404, 'id not found');
+        }
+      });
     }
     else {
       // Invalid id parameter
       errorResponse(res, 404, 'Invalid id parameter');
     }
-  }
+  } // end if noNullValues
   else {
     // eexpected body values don't exist
     errorResponse(res, 404, 'Missing expected body data');
