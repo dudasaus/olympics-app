@@ -7,36 +7,36 @@
 --- SECTION 1: TABLES FOR INFORMATION ABOUT THE ACTUAL OLYMPICS ---
 
 --- General category (e.g. skiing)
-DROP TABLE IF EXISTS sports_category;
+DROP TABLE IF EXISTS sports_category CASCADE;
 CREATE TABLE sports_category (
     id SERIAL NOT NULL,
-    name VARCHAR(20) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
 --- Specific type of event (e.g. Mens halfpipe)
-DROP TABLE IF EXISTS sports_events;
+DROP TABLE IF EXISTS sports_events CASCADE;
 CREATE TABLE sports_events (
     id SERIAL NOT NULL,
-    name VARCHAR(40) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     category_id INTEGER NOT NULL REFERENCES sports_category(id),
     team_event BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id)
 );
 
 --- Actual event with times (e.g. Mens halfpipe qualifiers)
-DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS events CASCADE;
 CREATE TABLE events (
     id SERIAL NOT NULL,
-    name VARCHAR(120) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     event_id INTEGER NOT NULL REFERENCES sports_events(id),
     time TIMESTAMP NOT NULL,
-    finals BOOLEAN NOT NULL DEFAULT 0,
+    finals BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id)
 );
 
 --- Country info
-DROP TABLE IF EXISTS countries;
+DROP TABLE IF EXISTS countries CASCADE;
 CREATE TABLE countries (
     id SERIAL NOT NULL,
     name VARCHAR(40) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE countries (
 );
 
 --- Athletes info
-DROP TABLE IF EXISTS athletes;
+DROP TABLE IF EXISTS athletes CASCADE;
 CREATE TABLE athletes (
     id SERIAL NOT NULL,
     name VARCHAR(40) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE athletes (
 );
 
 --- Connections between athletes and their sports event(s)
-DROP TABLE IF EXISTS athletes_sports_events;
+DROP TABLE IF EXISTS athletes_sports_events CASCADE;
 CREATE TABLE athletes_sports_events (
     athlete_id INTEGER NOT NULL REFERENCES athletes(id),
     sports_event_id INTEGER NOT NULL REFERENCES sports_events(id),
@@ -62,7 +62,7 @@ CREATE TABLE athletes_sports_events (
 );
 
 --- Info about which countries participate in which sports events
-DROP TABLE IF EXISTS countries_sports_events;
+DROP TABLE IF EXISTS countries_sports_events CASCADE;
 CREATE TABLE countries_sports_events (
     country_id INTEGER NOT NULL REFERENCES countries(id),
     sports_event_id INTEGER NOT NULL REFERENCES sports_events(id),
@@ -70,7 +70,7 @@ CREATE TABLE countries_sports_events (
 );
 
 --- Results info for events
-DROP TABLE IF EXISTS results;
+DROP TABLE IF EXISTS results CASCADE;
 CREATE TABLE results (
     sports_event_id INTEGER NOT NULL REFERENCES sports_events(id),
     country_id INTEGER NOT NULL REFERENCES countries(id),
